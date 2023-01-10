@@ -7,14 +7,21 @@
     "cljs-dev": "shadow-cljs watch :app",
     "js-dev": "parcel serve -p 1255 src/index.html",
     "cljs-prod": "shadow-cljs release :app --pseudo-names",
-    "js-prod": "parcel build --dist-dir public src/index.html"
+    "js-prod": "parcel build --dist-dir public --public-url ./ src/index.html",
+    "clean": "shx rm -rf public/*",
+    "prebuild": "npm run clean",
+    "build": "npm run cljs-prod && npm run js-prod",
+    "push-gh-pages": "push-dir --dir=public --branch=gh-pages --cleanup --verbose",
+    "release": "npm run build && npm run push-gh-pages"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "parcel": "^2.8.2",
-    "shadow-cljs": "^2.20.18"
+    "push-dir": "^0.4.1",
+    "shadow-cljs": "^2.20.18",
+    "shx": "^0.3.4"
   },
   "dependencies": {
     "bulma": "^0.9.4",
