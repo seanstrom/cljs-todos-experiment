@@ -174,6 +174,10 @@
     (fn [todo state]
       (assoc todo :completed state))
 
+    markAllTodos
+    (fn [flag]
+      (into (sorted-map) (map (fn [[id todo]] [id (markTodo todo flag)]) @todos)))
+
     completeTodo
     (fn [todoId]
       (let [todo (get @todos todoId)
@@ -184,10 +188,10 @@
     (fn []
       (if (every? #(->> % second :completed) @todos)
         (let
-         [updatedTodos (into (sorted-map) (map (fn [[id todo]] [id (markTodo todo false)]) @todos))]
+         [updatedTodos (markAllTodos false)]
           (reset! todos updatedTodos))
         (let
-         [updatedTodos (into (sorted-map) (map (fn [[id todo]] [id (markTodo todo true)]) @todos))]
+         [updatedTodos (markAllTodos true)]
           (reset! todos updatedTodos))))
 
     setFilter
